@@ -1,0 +1,30 @@
+# tentukan role | Sudoer -> role user (bos)
+sudo: required
+
+#OS yang dipakai
+dist: trusty
+
+#bahasa yang digunakan
+language: php
+
+#versi bahasa yang digunakan
+php:
+  -7.1
+
+#tentukan branch
+branches:
+  only:
+    - master #-> QA/Staging
+    - develop #-> DevServer
+
+    before_script:
+      - cp .env.travis .env
+      - composer install --no-interaction
+      - php artisan key:generate
+
+#script -> main execution
+  script:
+      - ./vendor/bin/phpunit
+
+#ketika kondisi main execution finish
+  after_success:
